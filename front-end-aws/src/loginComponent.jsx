@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importez useHistory depuis react-router-dom
 
+
 const LoginForm = ({ onLogin }) => {
   const navigate = useNavigate(); // Initialisez useHistory
 
@@ -33,6 +34,12 @@ const LoginForm = ({ onLogin }) => {
                 return response.json(); // Renvoie une nouvelle promesse
             })
             .then((data) => {
+                // signIn({
+                //   token: data.token,
+                //   expiresIn: 3600,
+                //   tokenType: 'Bearer',
+                //   authState: { username : data.user.username}
+                // })
                 const token = data.token
 
                 localStorage.setItem('token', token)
