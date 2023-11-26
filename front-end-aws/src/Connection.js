@@ -1,16 +1,17 @@
-import RegistrationForm from "./registerComponent";
-import LoginForm from "./loginComponent";
-import './Connection.css'
+import RegistrationForm from "./Components/registerComponent";
+import './css/Connection.css'
+import { Link } from "react-router-dom";
 
 
 const Connection = () => {
     return(
         <div className="container">
             <div className="card">
-                < RegistrationForm />
-                <p className="result">
+                <h3>Inscription </h3>
+                    <RegistrationForm/>
 
-                </p>
+                <Link className="alreadyAccount" to='/login'>Deja un compte ?</Link>
+
             </div>    
         </div>
     )

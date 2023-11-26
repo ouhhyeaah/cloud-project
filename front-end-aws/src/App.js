@@ -1,9 +1,9 @@
 // App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import RegisterForm from './registerComponent';
+import RegisterForm from './Components/registerComponent';
 import Home from './Home';
-import Login from './loginComponent';
+import Login from './Components/loginComponent';
 import Connection from './Connection';
 import PrivateRoute from './PrivateRoute';
 
@@ -34,8 +34,8 @@ const App = () => {
             }
           isAuth={isAuthenticated}
         />
-        <Route path="/register" Component={RegisterForm} /> 
         <Route path="/login"  element={<Login onLogin={handleLogin} />} />
+
         <Route path='/' Component={Connection} ></Route>
       </Routes>
     </Router>
