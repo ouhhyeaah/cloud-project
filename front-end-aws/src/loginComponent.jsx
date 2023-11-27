@@ -1,87 +1,63 @@
+// LoginForm.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importez useHistory depuis react-router-dom
-import { useSignIn } from 'react-auth-kit'
+import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({ onLogin }) => {
-  const navigate = useNavigate(); // Initialisez useHistory
-  const signIn = useSignIn()
-  // State pour stocker les valeurs des champs du formulaire
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
+const LoginForm = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  // Fonction de gestion des changements de champ
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      // Effectuez votre requête ici, par exemple avec fetch
-      await fetch('https://9bbdznsjw8.execute-api.us-east-1.amazonaws.com/dev/login', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'Accept': '*/*',
-                },
-                body: JSON.stringify(formData),
-            })
-            .then((response) => {
-                if (!response.ok) {throw new Error(`Erreur de réseau : ${response.status}`);}
-                return response.json(); // Renvoie une nouvelle promesse
-            })
-            .then((data) => {
-                signIn({
-                  token: data.token,
-                  expiresIn: 3600,
-                  tokenType: 'Bearer',
-                  authState: { username : data.user.username}
-                })
+      // Effectuez votre requête d'authentification ici
+      const response = await fetch('https://9bbdznsjw8.execute-api.us-east-1.amazonaws.com/dev/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          },
+        body: JSON.stringify({ username, password }),
+      });
 
-                onLogin(true);
-                
-                navigate('/home')
-            })
-              .catch((error) => {
-                console.error('Erreur lors de la récupération des données :', error);
-              });
-            
+      if (!response.ok) {
+        throw new Error('Échec de la connexion');
+      }
+
+      const data = await response.json();
+
+      // Vérifiez si la réponse contient un token
+      if (data.token) {
+        // Stockez le token dans le stockage local
+        localStorage.setItem('token', data.token);
+
+
+        // Redirigez l'utilisateur vers l'URL '/'
+        navigate('/')
+      } else {
+        throw new Error('Le token est manquant dans la réponse');
+      }
     } catch (error) {
-      console.error('Erreur lors de la requête', error);
+      console.error('Erreur lors de la connexion :', error);
+      // Gérer les erreurs de connexion ici
     }
   };
 
-
   return (
-    <form onSubmit={handleLogin}>
+    <div>
       <label>
-        Username:
-        <input
-          type="email"
-          name="username"
-          required
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-      </label>
-
-      <label>
-        Password:
-        <input
-          type="password"
-          name="password"
-          required
-          value={formData.password}
-          onChange={handleInputChange}
-        />
+        Nom d'utilisateur:
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       </label>
       <br />
 
-      <button onClick={handleLogin}>Se connecter</button>
-    </form>
+      <label>
+        Mot de passe:
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </label>
+      <br />
+
+      <button type="button" onClick={handleLogin}>Se connecter</button>
+    </div>
   );
 };
 

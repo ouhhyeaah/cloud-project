@@ -1,43 +1,37 @@
 // App.js
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import RegisterForm from './registerComponent';
-import Home from './Home';
-import Login from './loginComponent';
-import Connection from './Connection';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import LoginForm from './Components/loginComponent'
+import RegistrationForm from './Components/registerComponent';
+import Home from './Home'
 
 const App = () => {
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Vérifiez la présence du token ou effectuez toute logique d'authentification
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
-
-  
-  const handleLogin = (isLoggedIn) => {
-    setIsAuthenticated(isLoggedIn);
-  };
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
 
   return (
-
     <Router>
       <Routes>
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-            }
-          isAuth={isAuthenticated}
-        />
-        <Route path="/register" Component={RegisterForm} /> 
-        <Route path="/login"  element={<Login onLogin={handleLogin} />} />
-        <Route path='/' Component={Connection} ></Route>
+          <Route
+            path="*"
+            element={<PrivateRoute path="/" element={ <Home /> } />}
+          />
+
+          <Route
+            path="/login"
+            element={<LoginForm onLogin={() => setIsAuthenticated(true)} />}
+          />
+
+          <Route
+            path='/register'
+            element={ <RegistrationForm/>}>
+          </Route>
+
+          <Route path='/profile'>
+            
+          </Route>
       </Routes>
     </Router>
   );
