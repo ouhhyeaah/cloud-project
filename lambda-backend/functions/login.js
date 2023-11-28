@@ -5,17 +5,18 @@ const userDB = require("../helpers/dbHelpers/users");
 const bcrypt = require("bcryptjs");
 
 exports.login = async (user) => {
-  const username = user.username;
+  const email = user.email;
+
   const password = user.password;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return util.buildResponse(401, {
-      message: "username and password is required",
+      message: "email and password is required",
     });
   }
 
-  const dynamoUser = await userDB.getUser(username);
-  if (!dynamoUser || !dynamoUser.username) {
+  const dynamoUser = await userDB.getUser(email);
+  if (!dynamoUser || !dynamoUser.email) {
     return util.buildResponse(401, {
       message: "username incorrect",
     });
@@ -28,8 +29,8 @@ exports.login = async (user) => {
   }
 
   const userInfo = {
-    username: dynamoUser.username,
-    name: dynamoUser.name,
+    email: dynamoUser.email,
+    last_name: dynamoUser.last_name,
   };
 
   const token = auth.generateToken(userInfo);

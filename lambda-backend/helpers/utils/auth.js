@@ -10,7 +10,7 @@ exports.generateToken = (userInfo) => {
   });
 };
 
-exports.verifyToken = (username, token) => {
+exports.verifyToken = (email, token) => {
   return jwt.verify(token, process.env.JWT_SECRET, (error, response) => {
     if (error) {
       return {
@@ -20,7 +20,7 @@ exports.verifyToken = (username, token) => {
       };
     }
 
-    if (response.username !== username) {
+    if (response.email !== email) {
       return {
         verified: false,
         message: "Invalid user",

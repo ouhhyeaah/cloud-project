@@ -7,13 +7,13 @@ AWS.config.update({ region: "us-east-1" });
 // Create DynamoDB document client
 const dynamoDB = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
 
-const userTable = "users";
+const userTable = "userpro";
 
-exports.getUser = async (username) => {
+exports.getUser = async (email) => {
   const params = {
     TableName: userTable,
     Key: {
-      username: username,
+      email: email,
     },
   };
   return await dynamoDB
@@ -50,11 +50,17 @@ exports.saveUser = async (user) => {
   const params = {
     TableName: userTable,
     Key: {
-      username: user.username,
+      email: user.email,
     },
-    Item: user,
+    Item: {
+      email: user.email,
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone_number: user.phone_number,
+      password: user.password,
+    },
   };
-
   return await dynamoDB
     .put(params)
     .promise()
@@ -64,6 +70,8 @@ exports.saveUser = async (user) => {
       },
       (error) => {
         console.log("Error saving user", error);
+        //je veux pouvoir retourner le message d'erreur
+        return error;
       }
     );
 };

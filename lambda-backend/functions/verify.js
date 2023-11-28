@@ -2,16 +2,18 @@ const util = require("../helpers/utils/util");
 const auth = require("../helpers/utils/auth");
 
 exports.verify = (requestBody) => {
-  const username = requestBody.username;
+
+  const email = requestBody.email;
   const token = requestBody.token;
-  if (!username || !token) {
+
+  if (!email || !token) {
     return util.buildResponse(401, {
       verified: false,
       message: "Incorrect request body",
     });
   }
 
-  const verification = auth.verifyToken(username, token);
+  const verification = auth.verifyToken(email, token);
 
   if (!verification.verified) {
     return util.buildResponse(401, verification);
