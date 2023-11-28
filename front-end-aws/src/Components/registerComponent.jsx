@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Select from 'react-select';
+import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom"; // Importez useHistory depuis react-router-dom
 import "../css/Connection.css";
 
@@ -21,16 +21,19 @@ const RegistrationForm = () => {
 
   // State pour stocker les valeurs des champs du formulaire
   const [formData, setFormData] = useState({
-    last_name: "",
-    first_name: "",
-    coutry: "",
-    address:"",
-    postal_code:"",
-    city: "",
     email: "",
-    phone_number:"",
-    job:"",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    job: "",
     password: "",
+  });
+
+  const [addressData, setAddressData] = useState({
+    address: "",
+    postal_code: "",
+    city: "",
+    country: "",
   });
 
   // Fonction de gestion des changements de champ
@@ -44,7 +47,7 @@ const RegistrationForm = () => {
     try {
       // Effectuez votre requête ici, par exemple avec fetch
       await fetch(
-        "https://9bbdznsjw8.execute-api.us-east-1.amazonaws.com/dev/register",
+        "https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/register",
         {
           method: "POST",
           headers: {
@@ -59,13 +62,11 @@ const RegistrationForm = () => {
             response.json().then((data) => {
               window.alert(data);
             });
-
-            // throw new Error(`Erreur de réseau : ${response.status}`);
           }
           return response.json(); // Renvoie une nouvelle promesse
         })
         .then((data) => {
-          navigate('/login')
+          navigate("/login");
         });
     } catch (error) {
       console.error("Erreur lors de la requête", error);
@@ -76,58 +77,72 @@ const RegistrationForm = () => {
     <div className="container">
       <div className="card">
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="last_name"
-            required
-            placeholder="Enter your last name"
-            value={formData.last_name}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="first_name"
-            required
-            placeholder="Enter your first name"
-            value={formData.first_name}
-            onChange={handleInputChange}
-          />
-          <Select
-            options={countries}
-            value={selectedCountry}
-            onChange={(selectedOption) => setSelectedCountry(selectedOption)}
-          />
-          <input
-            type="text"
-            name="address"
-            required
-            placeholder="Enter your address"
-            value={formData.address}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="postal_code"
-            required
-            placeholder="Enter your postal code"
-            maxLength={6}
-            value={formData.postal_code}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="city"
-            required
-            placeholder="Enter your city"
-            value={formData.city}
-            onChange={handleInputChange}
-          />
+          <div className="input-line">
+            <h5>Personnal Informations</h5>
+            <input
+              className="user"
+              type="text"
+              name="last_name"
+              required
+              placeholder="Enter your last name"
+              value={formData.last_name}
+              onChange={handleInputChange}
+            />
+            <input
+              className="user"
+              type="text"
+              name="first_name"
+              required
+              placeholder="Enter your first name"
+              value={formData.first_name}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="input-line">
+            <h5>Address Informations</h5>
+            <input
+              type="text"
+              name="postal_code"
+              required
+              placeholder="Enter your postal code"
+              maxLength={6}
+              value={formData.postal_code}
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              name="address"
+              required
+              placeholder="Enter your address"
+              value={formData.address}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="input-line">
+            <input
+              type="text"
+              name="city"
+              required
+              placeholder="Enter your city"
+              value={formData.city}
+              onChange={handleInputChange}
+            />
+            <Select
+              options={countries}
+              value={selectedCountry}
+              onChange={(selectedOption) => setSelectedCountry(selectedOption)}
+            />
+          </div>
+          <div className="input-line"> 
+          <h5>Contact Informations</h5>
           <input
             type="tel"
             pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             name="phone_number"
             required
-            placeholder="Enter your phone number"
+            placeholder="Phone number format 000-00-000"
+            size={8}
             value={formData.phone_number}
             onChange={handleInputChange}
           />
@@ -139,6 +154,7 @@ const RegistrationForm = () => {
             value={formData.email}
             onChange={handleInputChange}
           />
+          </div>
           <input
             id="job"
             type="text"
@@ -159,7 +175,7 @@ const RegistrationForm = () => {
           <button type="submit">Submit</button>
         </form>
 
-        <Link to={'/login'}> Deja un compte ?</Link>
+        <Link to={"/login"}> Deja un compte ?</Link>
       </div>
     </div>
   );

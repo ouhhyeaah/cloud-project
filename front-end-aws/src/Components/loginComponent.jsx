@@ -8,7 +8,7 @@ const LoginForm = ({ onLogin }) => {
 
   // State pour stocker les valeurs des champs du formulaire
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,7 +23,7 @@ const LoginForm = ({ onLogin }) => {
     try {
       // Effectuez votre requête ici, par exemple avec fetch
       await fetch(
-        "https://9bbdznsjw8.execute-api.us-east-1.amazonaws.com/dev/login",
+        "https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/login",
         {
           method: "POST",
           headers: {
@@ -40,7 +40,7 @@ const LoginForm = ({ onLogin }) => {
           if(data.message){window.alert(data.message)}
           
           localStorage.setItem("token", data.token);
-          localStorage.setItem('username', data.user.username)
+          localStorage.setItem('email', data.user.email)
 
           navigate("/");
         })
@@ -59,10 +59,10 @@ const LoginForm = ({ onLogin }) => {
         <form onSubmit={handleLogin}>
             <input
               type="email"
-              name="username"
+              name="email"
               required
               placeholder="Enter your email"
-              value={formData.username}
+              value={formData.email}
               onChange={handleInputChange}
             />
 

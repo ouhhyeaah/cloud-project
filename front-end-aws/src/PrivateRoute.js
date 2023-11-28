@@ -9,11 +9,11 @@ const PrivateRoute = ({ path, element }) => {
     const fetchData = async () => {
       try {
         // Récupère le username et le token du stockage local
-        const username = localStorage.getItem('username');
+        const email = localStorage.getItem('email');
         const token = localStorage.getItem('token');
 
-        if (username && token) {
-          const isValid = await CheckToken({username, token});
+        if (email && token) {
+          const isValid = await CheckToken({email, token});
           setIsTokenValid(isValid);
         } else {
           setIsTokenValid(false);

@@ -1,14 +1,14 @@
-const CheckToken = async ({ username, token }) => {
+const CheckToken = async ({ email, token }) => {
   try {
     const response = await fetch(
-      "https://9bbdznsjw8.execute-api.us-east-1.amazonaws.com/dev/verify",
+      "https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/verify",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "*/*",
         },
-        body: JSON.stringify({ username, token }),
+        body: JSON.stringify({ email, token }),
       }
     );
 
