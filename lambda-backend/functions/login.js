@@ -1,7 +1,6 @@
 const util = require("../helpers/utils/util");
 const auth = require("../helpers/utils/auth");
 const userDB = require("../helpers/dbHelpers/users");
-
 const bcrypt = require("bcryptjs");
 
 exports.login = async (user) => {
@@ -16,9 +15,10 @@ exports.login = async (user) => {
   }
 
   const dynamoUser = await userDB.getUser(email);
+
   if (!dynamoUser || !dynamoUser.email) {
     return util.buildResponse(401, {
-      message: "username incorrect",
+      message: "username incorrect ",
     });
   }
 
@@ -30,7 +30,6 @@ exports.login = async (user) => {
 
   const userInfo = {
     email: dynamoUser.email,
-    last_name: dynamoUser.last_name,
   };
 
   const token = auth.generateToken(userInfo);
@@ -39,6 +38,6 @@ exports.login = async (user) => {
     user: userInfo,
     token: token,
   };
+
   return util.buildResponse(200, response);
 };
-

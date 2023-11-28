@@ -4,6 +4,7 @@ const auth = require("../helpers/utils/auth");
 exports.verify = (requestBody) => {
 
   const email = requestBody.email;
+
   const token = requestBody.token;
 
   if (!email || !token) {
@@ -22,7 +23,7 @@ exports.verify = (requestBody) => {
   return util.buildResponse(200, {
     verified: true,
     message: "success",
-    username: username,
+    email: email,
     token: token,
   });
 };

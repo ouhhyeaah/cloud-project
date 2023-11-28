@@ -70,7 +70,6 @@ exports.saveUser = async (user) => {
       },
       (error) => {
         console.log("Error saving user", error);
-        //je veux pouvoir retourner le message d'erreur
         return error;
       }
     );
