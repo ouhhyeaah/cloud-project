@@ -4,15 +4,20 @@ const userDB = require("../helpers/dbHelpers/users");
 
 const bcrypt = require("bcryptjs");
 
-exports.register = async (userInfo) => {
+exports.register = async (user) => {
 
 
   const id = Math.floor(Math.random() * 1000000000).toString();
-  const email = userInfo.email;
-  const first_name = userInfo.first_name;
-  const last_name = userInfo.last_name;
-  const password = userInfo.password;
-  const phone_number = userInfo.phone_number;
+  const email = user.email;
+  const first_name = user.first_name;
+  const last_name = user.last_name;
+  const password = user.password;
+  const phone_number = user.phone_number;
+
+  const address = user.address;
+  const city = user.city;
+  const country = user.country;
+  const postal_code = user.postal_code;
 
 
   const dynamoUser = await userDB.getUser(email);
@@ -23,7 +28,8 @@ exports.register = async (userInfo) => {
     });
   }
   const encryptedPassword = bcrypt.hashSync(password.trim(), 10);
-  const user = {
+
+  const userInfo = {
     id: id,
     email: email,
     first_name: first_name,
@@ -31,8 +37,15 @@ exports.register = async (userInfo) => {
     password: encryptedPassword,
     phone_number: phone_number,
   };
+  
+  const locationInfo = {
+    address: address,
+    city: city,
+    country: country,
+    postal_code: postal_code,
+  };
 
-  const savedUserResponse = await userDB.saveUser(user);
+  const savedUserResponse = await userDB.saveUser(userInfo, locationInfo);
 
   if (!savedUserResponse) {
     return util.buildResponse(503, { message: savedUserResponse});

@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom"; // Importez useHistory depuis react-router-dom
+import { PatternFormat} from "react-number-format"; // Lib pour les formats de numéro de téléphone
 import "../css/Connection.css";
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // Initialisez useHistory
 
+  // select input from https://codesandbox.io/p/sandbox/country-dropdown-with-react-select-w0rk6
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState({});
+
   useEffect(() => {
     fetch(
-      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
+        "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
     )
-      .then((response) => response.json())
-      .then((data) => {
-        setCountries(data.countries);
-        setSelectedCountry(data.userSelectValue);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setCountries(data.countries);
+          setSelectedCountry(data.userSelectValue);
+        });
   }, []);
 
   // State pour stocker les valeurs des champs du formulaire
@@ -37,13 +41,27 @@ const RegistrationForm = () => {
   });
 
   // Fonction de gestion des changements de champ
-  const handleInputChange = (e) => {
+  const handleUserInfoChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  // gestion des changements de champ pour l'adresse
+  const handleAddressInfoChange = (e) => {
+    const { name, value } = e.target;
+    setAddressData({ ...addressData, [name]: value });
+  }
+  const handleCountryChange = (e) => {
+    const value = e.value;
+    setAddressData({ ...addressData, ["country"]: value });
+  }
+  const allData = {
+    ...formData,
+    ...addressData
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       // Effectuez votre requête ici, par exemple avec fetch
       await fetch(
@@ -53,7 +71,7 @@ const RegistrationForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(allData),
         }
       )
         .then((response) => {
@@ -86,7 +104,7 @@ const RegistrationForm = () => {
               required
               placeholder="Enter your last name"
               value={formData.last_name}
-              onChange={handleInputChange}
+              onChange={handleUserInfoChange}
             />
             <input
               className="user"
@@ -95,7 +113,7 @@ const RegistrationForm = () => {
               required
               placeholder="Enter your first name"
               value={formData.first_name}
-              onChange={handleInputChange}
+              onChange={handleUserInfoChange}
             />
           </div>
 
@@ -108,7 +126,8 @@ const RegistrationForm = () => {
               placeholder="Enter your postal code"
               maxLength={6}
               value={formData.postal_code}
-              onChange={handleInputChange}
+              onChange={handleAddressInfoChange}
+              className={"home"}
             />
             <input
               type="text"
@@ -116,7 +135,9 @@ const RegistrationForm = () => {
               required
               placeholder="Enter your address"
               value={formData.address}
-              onChange={handleInputChange}
+              onChange={handleAddressInfoChange}
+              className={"home"}
+
             />
           </div>
           <div className="input-line">
@@ -126,43 +147,46 @@ const RegistrationForm = () => {
               required
               placeholder="Enter your city"
               value={formData.city}
-              onChange={handleInputChange}
+              onChange={handleAddressInfoChange}
             />
             <Select
-              options={countries}
-              value={selectedCountry}
-              onChange={(selectedOption) => setSelectedCountry(selectedOption)}
+                options={countries}
+                value={selectedCountry}
+                name="country"
+                required
+                onChange={handleCountryChange}
+              //onChange={(selectedOption) => setSelectedCountry(selectedOption)}
             />
           </div>
           <div className="input-line"> 
           <h5>Contact Informations</h5>
-          <input
-            type="tel"
-            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-            name="phone_number"
-            required
-            placeholder="Phone number format 000-00-000"
-            size={8}
-            value={formData.phone_number}
-            onChange={handleInputChange}
-          />
+            {/*// https://s-yadav.github.io/react-number-format/docs/intro*/}
+
+            <PatternFormat
+                format="+1 (###)-####-###"
+                placeholder={"Format : (###)-####-###"}
+                name={"phone_number"}
+                required
+                value={formData.phone_number}
+                onChange={handleUserInfoChange}
+            />
           <input
             type="email"
             name="email"
             required
             placeholder="Enter your email"
             value={formData.email}
-            onChange={handleInputChange}
+            onChange={handleUserInfoChange}
           />
           </div>
           <input
-            id="job"
             type="text"
             name="job"
             required
             placeholder="Enter your job/activity"
             value={formData.job}
-            onChange={handleInputChange}
+            onChange={handleUserInfoChange}
+            className={"job"}
           />
           <input
             type="password"
@@ -170,7 +194,8 @@ const RegistrationForm = () => {
             required
             placeholder="Enter your password"
             value={formData.password}
-            onChange={handleInputChange}
+            onChange={handleUserInfoChange}
+            className={"password"}
           />
           <button type="submit">Submit</button>
         </form>

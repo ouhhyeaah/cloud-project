@@ -61,15 +61,16 @@ const LoginForm = ({ onLogin }) => {
               type="email"
               name="email"
               required
-              placeholder="Enter your email"
+              placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
             />
 
             <input
+                className={"password"}
               type="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Password"
               required
               value={formData.password}
               onChange={handleInputChange}

@@ -1,7 +1,7 @@
 const util = require("../helpers/utils/util");
 const auth = require("../helpers/utils/auth");
 
-exports.verify = (requestBody) => {
+exports.verify = async (requestBody) => {
 
   const email = requestBody.email;
 

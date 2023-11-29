@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 
 exports.login = async (user) => {
   const email = user.email;
-
   const password = user.password;
 
   if (!email || !password) {
