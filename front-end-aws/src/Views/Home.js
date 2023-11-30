@@ -1,6 +1,5 @@
 import "../css/App.css"
 
-import topBar from "../Components/topBar";
 import TopBar from "../Components/topBar";
 const Home = () => {
     return (

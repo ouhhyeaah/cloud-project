@@ -17,14 +17,13 @@ const RegistrationForm = () => {
     )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           setCountries(data.countries);
           setSelectedCountry(data.userSelectValue);
         });
   }, []);
 
   // State pour stocker les valeurs des champs du formulaire
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
     email: "",
     first_name: "",
     last_name: "",
@@ -43,7 +42,7 @@ const RegistrationForm = () => {
   // Fonction de gestion des changements de champ
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
   // gestion des changements de champ pour l'adresse
   const handleAddressInfoChange = (e) => {
@@ -52,10 +51,11 @@ const RegistrationForm = () => {
   }
   const handleCountryChange = (e) => {
     const value = e.value;
+    setSelectedCountry(e);
     setAddressData({ ...addressData, ["country"]: value });
   }
   const allData = {
-    ...formData,
+    ...userData,
     ...addressData
   }
 
@@ -103,7 +103,7 @@ const RegistrationForm = () => {
               name="last_name"
               required
               placeholder="Enter your last name"
-              value={formData.last_name}
+              value={userData.last_name}
               onChange={handleUserInfoChange}
             />
             <input
@@ -112,7 +112,7 @@ const RegistrationForm = () => {
               name="first_name"
               required
               placeholder="Enter your first name"
-              value={formData.first_name}
+              value={userData.first_name}
               onChange={handleUserInfoChange}
             />
           </div>
@@ -125,7 +125,7 @@ const RegistrationForm = () => {
               required
               placeholder="Enter your postal code"
               maxLength={6}
-              value={formData.postal_code}
+              value={addressData.postal_code}
               onChange={handleAddressInfoChange}
               className={"home"}
             />
@@ -134,7 +134,7 @@ const RegistrationForm = () => {
               name="address"
               required
               placeholder="Enter your address"
-              value={formData.address}
+              value={addressData.address}
               onChange={handleAddressInfoChange}
               className={"home"}
 
@@ -146,7 +146,7 @@ const RegistrationForm = () => {
               name="city"
               required
               placeholder="Enter your city"
-              value={formData.city}
+              value={addressData.city}
               onChange={handleAddressInfoChange}
             />
             <Select
@@ -167,15 +167,16 @@ const RegistrationForm = () => {
                 placeholder={"Format : (###)-####-###"}
                 name={"phone_number"}
                 required
-                value={formData.phone_number}
+                value={userData.phone_number}
                 onChange={handleUserInfoChange}
             />
           <input
             type="email"
             name="email"
-            required
+            id={"email"}
+            requiredw
             placeholder="Enter your email"
-            value={formData.email}
+            value={userData.email}
             onChange={handleUserInfoChange}
           />
           </div>
@@ -184,7 +185,7 @@ const RegistrationForm = () => {
             name="job"
             required
             placeholder="Enter your job/activity"
-            value={formData.job}
+            value={userData.job}
             onChange={handleUserInfoChange}
             className={"job"}
           />
@@ -193,7 +194,7 @@ const RegistrationForm = () => {
             name="password"
             required
             placeholder="Enter your password"
-            value={formData.password}
+            value={userData.password}
             onChange={handleUserInfoChange}
             className={"password"}
           />

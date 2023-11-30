@@ -45,7 +45,7 @@ select {
   background-repeat: no-repeat;
 }
 
-input[type="email"] {
+input#email {
   background-image: url(https://img.icons8.com/ultraviolet/40/secured-letter--v1.png);
 }
 .password {

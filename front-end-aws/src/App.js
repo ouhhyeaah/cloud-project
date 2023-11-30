@@ -15,17 +15,13 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/*<Route*/}
-        {/*  path="*"*/}
-        {/*  element={<PrivateRoute path="/" element={<Home />} />}*/}
-        {/*/>*/}
         <Route
             path={"/"}
             element={< Home />}
         />
 
         <Route
-            path="/profile"
+            path="/profile/*"
             element={
               <PrivateRoute
                   path="/"
@@ -39,7 +35,10 @@ const App = () => {
         />
 
         <Route path="/register" element={<RegistrationForm />}></Route>
-
+          <Route
+              path={"/logout"}
+              element={<Home />}>
+          </Route>
       </Routes>
     </Router>
   );

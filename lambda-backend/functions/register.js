@@ -11,8 +11,9 @@ exports.register = async (user) => {
   const email = user.email;
   const first_name = user.first_name;
   const last_name = user.last_name;
-  const password = user.password;
   const phone_number = user.phone_number;
+  const job = user.job;
+  const password = user.password;
 
   const address = user.address;
   const city = user.city;
@@ -34,8 +35,9 @@ exports.register = async (user) => {
     email: email,
     first_name: first_name,
     last_name: last_name,
-    password: encryptedPassword,
     phone_number: phone_number,
+    job: job,
+    password: encryptedPassword,
   };
   
   const locationInfo = {

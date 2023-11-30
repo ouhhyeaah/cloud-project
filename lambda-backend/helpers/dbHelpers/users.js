@@ -6,7 +6,6 @@ AWS.config.update({ region: "us-east-1" });
 
 // Create DynamoDB document client
 const dynamoDB = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
-const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 const userTable = "userpro";
 const locationTable = "location";
@@ -60,6 +59,7 @@ exports.saveUser = async (userInfo, locationInfo) => {
       first_name: userInfo.first_name,
       last_name: userInfo.last_name,
       phone_number: userInfo.phone_number,
+      job: userInfo.job,
       password: userInfo.password,
     },
   };
@@ -87,15 +87,6 @@ exports.saveUser = async (userInfo, locationInfo) => {
             },
             })
           .promise();
-
-    /*const result = await ddb
-      .batchWriteItem({
-        RequestItems: {
-          [userTable]: [{ PutRequest: { Item: userParams.Item } }],
-          [locationTable]: [{ PutRequest: { Item: locationParams.Item } }],
-        },
-      })
-      .promise();*/
 
     console.log("Successfully saved user and location info", result);
     return true;
