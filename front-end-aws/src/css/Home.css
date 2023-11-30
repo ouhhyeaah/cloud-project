@@ -1,0 +1,31 @@
+.main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.wrap-container{
+    width: 60%;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-container{
+    display: flex;
+    flex-direction: column;
+    background-color: #F0F2F5;
+    width: 660px;
+    height: max-content;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 20px;
+}
+.user-container{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

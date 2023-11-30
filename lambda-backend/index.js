@@ -2,6 +2,7 @@ const registerPath = "/register";
 const loginPath = "/login";
 const verifyPath = "/verify";
 const listPath = "/list"
+const postsPath = "/posts"
 
 const registerService = require("./functions/register");
 
@@ -12,6 +13,7 @@ const verifyService = require("./functions/verify");
 const listService = require("./functions/listUsers")
 
 const listUserByEmail = require("./functions/getUserByEmail")
+const postsService = require("./functions/posts")
 
 const util = require("./helpers/utils/util");
 
@@ -35,6 +37,12 @@ exports.handler = async (event) => {
             break;
         case httpMethod === "POST" && resource === listPath:
             response = await listUserByEmail.getUserByEmail(requestBody);
+            break;
+        case httpMethod === "GET" && resource === postsPath:
+            response = await postsService.getPosts();
+            break;
+        case httpMethod === "POST" && resource === postsPath:
+            response = await postsService.post(requestBody);
             break;
         default:
             response = util.buildResponse(404, "404 Not Found ");

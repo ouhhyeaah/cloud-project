@@ -7,7 +7,7 @@ import {BsCheckCircleFill} from "react-icons/bs";
 
 const Profile =  () => {
     const email = localStorage.getItem("email");
-    const [responseData, setResponseData] = useState(null);
+    const [responseData, setResponseData] = useState();
 
     useEffect(() => {
         const fetchData = async () => {

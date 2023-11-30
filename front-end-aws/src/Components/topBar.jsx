@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 import { BsPersonFill, BsHouse, BsBoxArrowInRight } from "react-icons/bs";
 const TopBar = () => {
 
-    const [isLogged, setIsLogged] = React.useState(false);
-    useEffect( () => {
+    const handleLogOut = () => {
 
-    }, [])
+        const [storageItems] = localStorage.getItem("email", "token" )
+        console.log(storageItems)
+    }
 
     return (
         <div className="topBar">
@@ -33,7 +34,7 @@ const TopBar = () => {
                     </div>
                 </div>
                 <div className={"topbar-right"}>
-                    <Link to={"/login"}
+                    <Link to={"/login"} onClick={handleLogOut}
                         className={"link"}
                     >
                         <BsBoxArrowInRight
