@@ -9,15 +9,20 @@ const PostsHomePage = ({posts}) => {
         <div className={"main-container"} >
             <div className={"wrap-container"}>
                 <div className={"posts-container"}>
-                    {posts.map( (key)=>(
+                    {posts.map((key)=>(
                         <div className={"post-container"}>
                             <div className={"user-container"}>
-                                <p>De {key.email}</p>
+                                <p>De <span className={"email"}> {key.email} </span> </p>
                                 <BsPersonFill size={24} />
                             </div>
 
                             <h2>{key.title}</h2>
                             <p>{key.description}</p>
+
+                            <div className={"contact-link"}>
+                                <a href={"mailto:"+key.email}>Contacter l'annonceur</a>
+                            </div>
+
                         </div>
                         )
                      )

@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 50px;
+
 }
 
 .wrap-container{
@@ -12,6 +13,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .post-container{
@@ -20,12 +22,22 @@
     background-color: #F0F2F5;
     width: 660px;
     height: max-content;
+    min-width: 300px;
     padding: 20px;
-    margin: 20px;
+    margin: 40px;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .user-container{
     display: flex;
     align-items: center;
     gap: 15px;
+}
+.email{
+    color: blue;
+    font-weight: bolder;
+}
+.contact-link{
+    display: flex;
+    justify-content: center;
 }

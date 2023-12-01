@@ -1,20 +1,24 @@
-const util = require("../helpers/utils/util");
+const util = require('../helpers/utils/util')
 
-const postsHelper = require("../helpers/dbHelpers/posts")
+const postsHelper = require('../helpers/dbHelpers/posts')
 
 exports.getPosts = async () => {
-    const posts = await postsHelper.getPosts();
+  const posts = await postsHelper.getPosts()
 
-    return util.buildResponse(200, posts)
+  return util.buildResponse(200, posts)
 }
 
 exports.post = async (post) => {
+  const postData = {
+    email: post.email,
+    title: post.title,
+    description: post.description,
+  }
 
-    const postData = [post.title, post.title, post.description]
-    const savedPost = await postsHelper.savePost(postData)
+  const savedPost = await postsHelper.savePost(postData)
 
-    if (!savedPost) {
-        return util.buildResponse(503, { message: savedPost});
-    }
-    return util.buildResponse(200, { email: email, title: title, description:description });
+  if (!savedPost) {
+    return util.buildResponse(503, { message: savedPost, step: postData })
+  }
+  return util.buildResponse(200, { email: post.email, title: post.title, description: post.description })
 }
