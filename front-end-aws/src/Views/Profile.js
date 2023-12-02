@@ -50,8 +50,6 @@ const Profile = () => {
                 <UserInfoComponent userInfo={responseData} />
               )}
             </div>
-
-            <button className={'save-button'}>Sauvegarder <BsCheckCircleFill /></button>
           </div>
 
 
