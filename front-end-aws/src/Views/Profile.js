@@ -37,15 +37,12 @@ const Profile = () => {
     <div>
       <TopBar />
       <div className={'profile-container'}>
-
         <div>
           <h1 className={'center'}>Votre profil {email} !</h1>
-
           <div className={'form_body'}>
             <div className={'forms'}>
               {!responseData ? (
                 <LoaderComponent />
-
               ) : (
                 <UserInfoComponent userInfo={responseData} />
               )}

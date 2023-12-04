@@ -14,9 +14,8 @@ const PostsHomePage = ({ posts }) => {
                 <div className={'user-container'}>
                   <p>De <span className={'email'}> {key.email} </span></p>
                   <BsPersonFill size={24} />
-                  <p> Creer le {key.createdAt.split('|')[0]} a {key.createdAt.split('|')[1]}</p>
+                  <p> Créer le {key.createdAt.split('|')[0]} à {key.createdAt.split('|')[1]}</p>
                 </div>
-
                 <h2>{key.title}</h2>
                 <p>{key.description}</p>
                 <div className={'contact-link'}>

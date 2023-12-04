@@ -60,6 +60,8 @@ exports.saveUser = async (userInfo, locationInfo) => {
       last_name: userInfo.last_name,
       phone_number: userInfo.phone_number,
       job: userInfo.job,
+      createdAt: userInfo.createdAt,
+      updatedAt: userInfo.updatedAt,
       password: userInfo.password,
     },
   }
@@ -111,6 +113,8 @@ exports.updateUser = async (userInfo, locationInfo) => {
       last_name: userInfo.last_name,
       phone_number: userInfo.phone_number,
       job: userInfo.job,
+      createdAt: userInfo.createdAt,
+      updatedAt: userInfo.updatedAt,
       password: userInfo.password,
     },
   }

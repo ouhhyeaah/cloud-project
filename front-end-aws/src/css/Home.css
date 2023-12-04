@@ -28,6 +28,10 @@
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.post-container:hover{
+    transform: scale3d(1.01,1.01,1.01%);
+    transition: all .2s ease;
+}
 .user-container{
     display: flex;
     align-items: center;

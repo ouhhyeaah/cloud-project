@@ -8,11 +8,13 @@ exports.updateUser = async (user) => {
   // INfo non modifiable
   const id = currentUser.id
   const email = currentUser.email
+  const create_timestamp = currentUser.createdAt ;
 
   const first_name = user.first_name
   const last_name = user.last_name
   const phone_number = user.phone_number
   const job = user.job
+  const updateTime = util.buildTimestamps();
   const password = user.password
   const encryptedPassword = bcrypt.hashSync(password.trim(), 10)
 
@@ -28,6 +30,8 @@ exports.updateUser = async (user) => {
     last_name: last_name,
     phone_number: phone_number,
     job: job,
+    createdAt: create_timestamp,
+    updatedAt: updateTime,
     password: encryptedPassword,
   }
   const locationInfo = {

@@ -18,6 +18,8 @@ exports.register = async (user) => {
   const country = user.country
   const postal_code = user.postal_code
 
+  const timestamp = util.buildTimestamps();
+
 
   const dynamoUser = await userDB.getUser(email)
 
@@ -35,6 +37,8 @@ exports.register = async (user) => {
     last_name: last_name,
     phone_number: phone_number,
     job: job,
+    createdAt: timestamp,
+    updatedAt: timestamp,
     password: encryptedPassword,
   }
   const locationInfo = {

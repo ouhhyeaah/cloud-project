@@ -55,7 +55,6 @@ const UserInfoComponent = ({ userInfo }) => {
     const { name, value } = e.target
     setAddressData({ ...addressData, [name]: value })
   }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -82,16 +81,18 @@ const UserInfoComponent = ({ userInfo }) => {
           return response.json() // Renvoie une nouvelle promesse
         })
         .then((data) => {
+          window.alert("Profil mis à jour")
           console.log(data)
         })
     } catch (error) {
       console.error('Erreur lors de la requête', error)
     }
   }
-
   return (
     <div>
       <div className={'center col'}>
+        <p> Profil crée le {userInfo.createdAt.split("|")[0]} à {userInfo.createdAt.split("|")[1]}</p>
+        <p> Profil mis à jour le {userInfo.updatedAt.split("|")[0]} à {userInfo.updatedAt.split("|")[1]} </p>
         <form onSubmit={handleSubmit}>
           <div className='input-line'>
             <h5>Informations Personnelles</h5>
@@ -100,7 +101,7 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='last_name'
               required
-              placeholder={userInfo.first_name}
+              placeholder={"Nom de famille"}
               value={userData.last_name}
               onChange={handleUserInfoChange}
             />
@@ -109,19 +110,18 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='first_name'
               required
-              placeholder={userInfo.first_name}
+              placeholder={"Prénom"}
               value={userData.first_name}
               onChange={handleUserInfoChange}
             />
           </div>
-
           <div className='input-line'>
             <h5>Information localisation</h5>
             <input
               type='text'
               name='postal_code'
               required
-              placeholder={userInfo.postal_code}
+              placeholder={"Code Postal"}
               maxLength={7}
               value={addressData.postal_code}
               onChange={handleAddressInfoChange}
@@ -194,7 +194,11 @@ const UserInfoComponent = ({ userInfo }) => {
             onChange={handleUserInfoChange}
             className={'password'}
           />
-          <button className={'save-button'}>Sauvegarder <BsCheckCircleFill /></button>
+          <button
+            className={'save-button'}>
+            Sauvegarder
+            <BsCheckCircleFill />
+          </button>
         </form>
 
       </div>
