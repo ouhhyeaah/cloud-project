@@ -19,7 +19,7 @@ const Home = () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            setResponseData(data)
+            setResponseData(data.reverse())
           })
       } catch (error) {
         console.error('Error fetching data:', error)

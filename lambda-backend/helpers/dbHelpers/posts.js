@@ -10,6 +10,7 @@ const postsTable = 'posts'
 exports.getPosts = async () => {
   const params = {
     TableName: postsTable,
+    Key: 'createdAt',
   }
   return await dynamoDB
     .scan(params)
@@ -36,6 +37,7 @@ exports.savePost = async (post) => {
       id: id,
       title: post.title,
       description: post.description,
+      createdAt: post.createdAt,
     },
   }
   return await dynamoDB

@@ -9,10 +9,14 @@ exports.getPosts = async () => {
 }
 
 exports.post = async (post) => {
+
+  const date = new Date()
+
   const postData = {
     email: post.email,
     title: post.title,
     description: post.description,
+    createdAt: util.buildTimestamps(),
   }
 
   const savedPost = await postsHelper.savePost(postData)
