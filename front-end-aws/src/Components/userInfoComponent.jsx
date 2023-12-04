@@ -6,6 +6,7 @@ import Select from 'react-select' // Lib pour les formats de numéro de téléph
 const UserInfoComponent = ({ userInfo }) => {
 
   const [userData, setUserData] = useState({
+    email: localStorage.getItem('email'),
     first_name: userInfo.first_name,
     last_name: userInfo.last_name,
     phone_number: userInfo.phone_number,
@@ -65,6 +66,8 @@ const UserInfoComponent = ({ userInfo }) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Accept: '*/*',
+            Connection: 'keep-alive',
           },
           body: JSON.stringify(allData),
         },
@@ -80,7 +83,6 @@ const UserInfoComponent = ({ userInfo }) => {
         })
         .then((data) => {
           console.log(data)
-          window.alert(data)
         })
     } catch (error) {
       console.error('Erreur lors de la requête', error)
