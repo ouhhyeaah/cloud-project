@@ -3,7 +3,6 @@ import TopBar from '../Components/topBar'
 import '../css/Profile.css'
 import UserInfoComponent from '../Components/userInfoComponent'
 import { useEffect, useState } from 'react'
-import { BsCheckCircleFill } from 'react-icons/bs'
 import LoaderComponent from '../Components/LoaderComponent'
 
 const Profile = () => {
@@ -13,7 +12,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/list', {
+        await fetch('https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/list', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -30,7 +29,7 @@ const Profile = () => {
     }
 
     fetchData()
-  }, []) // Assurez-vous de passer une dépendance vide pour exécuter useEffect une seule fois
+  }, [email]) // Assurez-vous de passer une dépendance vide pour exécuter useEffect une seule fois
 
 
   return (

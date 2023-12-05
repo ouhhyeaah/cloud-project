@@ -34,17 +34,19 @@ const UserInfoComponent = ({ userInfo }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        // comment faire pour ne plus avoir cette erreur ?
         setCountries(data.countries)
-        setSelectedCountry(data.userSelectValue)
+        const userSelectValue = data.countries.filter(
+          (country) => country.value === userInfo.country,
+        )
+        setSelectedCountry(userSelectValue[0])
       })
-  }, [])
+  }, [userInfo.country])
 
 
   const handleCountryChange = (e) => {
     const value = e.value
     setSelectedCountry(e)
-    setAddressData({ ...addressData, ['country']: value })
+    setAddressData({ ...addressData, 'country': value })
   }
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target
@@ -81,7 +83,7 @@ const UserInfoComponent = ({ userInfo }) => {
           return response.json() // Renvoie une nouvelle promesse
         })
         .then((data) => {
-          window.alert("Profil mis à jour")
+          window.alert('Profil mis à jour')
           console.log(data)
         })
     } catch (error) {
@@ -91,8 +93,8 @@ const UserInfoComponent = ({ userInfo }) => {
   return (
     <div>
       <div className={'center col'}>
-        <p> Profil crée le {userInfo.createdAt.split("|")[0]} à {userInfo.createdAt.split("|")[1]}</p>
-        <p> Profil mis à jour le {userInfo.updatedAt.split("|")[0]} à {userInfo.updatedAt.split("|")[1]} </p>
+        <p> Profil crée le {userInfo.createdAt.split('|')[0]} à {userInfo.createdAt.split('|')[1]}</p>
+        <p> Profil mis à jour le {userInfo.updatedAt.split('|')[0]} à {userInfo.updatedAt.split('|')[1]} </p>
         <form onSubmit={handleSubmit}>
           <div className='input-line'>
             <h5>Informations Personnelles</h5>
@@ -101,7 +103,7 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='last_name'
               required
-              placeholder={"Nom de famille"}
+              placeholder={'Nom de famille'}
               value={userData.last_name}
               onChange={handleUserInfoChange}
             />
@@ -110,7 +112,7 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='first_name'
               required
-              placeholder={"Prénom"}
+              placeholder={'Prénom'}
               value={userData.first_name}
               onChange={handleUserInfoChange}
             />
@@ -121,7 +123,7 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='postal_code'
               required
-              placeholder={"Code Postal"}
+              placeholder={'Code Postal'}
               maxLength={7}
               value={addressData.postal_code}
               onChange={handleAddressInfoChange}
@@ -158,7 +160,6 @@ const UserInfoComponent = ({ userInfo }) => {
           <div className='input-line'>
             <h5>Informations de contact</h5>
             {/*// https://s-yadav.github.io/react-number-format/docs/intro*/}
-
             <PatternFormat
               format='+1 (###)-####-###'
               placeholder={'Format : (###)-####-###'}
