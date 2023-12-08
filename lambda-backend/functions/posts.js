@@ -4,13 +4,11 @@ const postsHelper = require('../helpers/dbHelpers/posts')
 
 exports.getPosts = async () => {
   const posts = await postsHelper.getPosts()
-
   return util.buildResponse(200, posts)
 }
 
 exports.post = async (post) => {
 
-  const date = new Date()
 
   const postData = {
     email: post.email,

@@ -1,4 +1,5 @@
 const AWS = require('aws-sdk')
+const userDB = require('./users')
 
 // Set the region
 AWS.config.update({ region: 'us-east-1' })
@@ -27,6 +28,8 @@ exports.getPosts = async () => {
 
 exports.savePost = async (post) => {
   const id = Math.floor(Math.random() * 1000000000).toString()
+  const userTableInformation = await userDB.getUser(post.email);
+
   const params = {
     TableName: postsTable,
     Key: {
@@ -38,6 +41,7 @@ exports.savePost = async (post) => {
       title: post.title,
       description: post.description,
       createdAt: post.createdAt,
+      job: userTableInformation.job,
     },
   }
   return await dynamoDB

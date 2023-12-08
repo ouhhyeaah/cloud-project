@@ -4,10 +4,10 @@ const locationDB = require("../helpers/dbHelpers/location");
 
 exports.getUserByEmail = async (user) => {
 
-    const userTaleInformation = await userDB.getUser(user.email);
+    const userTableInformation = await userDB.getUser(user.email);
     const userLocationInfo = await locationDB.getLocationInfo(user.email);
     const userInformation = {
-        ...userTaleInformation,
+        ...userTableInformation,
         ...userLocationInfo
     }
 
