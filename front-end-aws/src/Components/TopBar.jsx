@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { BsPersonFill, BsHouse, BsBoxArrowInRight } from 'react-icons/bs'
 import { FaUserEdit } from 'react-icons/fa'
 import Modal from './ModalComponent'
-
 const TopBar = () => {
 
   const handleLogOut = () => {
@@ -51,6 +50,7 @@ const TopBar = () => {
           :
           false
         }
+
 
       </div>
       <div className={'topbar-right'}>

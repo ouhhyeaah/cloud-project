@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import LoginForm from "./Components/loginComponent";
-import RegistrationForm from "./Components/registerComponent";
+import LoginForm from "./Components/LoginComponent";
+import RegistrationForm from "./Components/RegisterComponent";
 import Home from "./Views/Home";
 import Profile from "./Views/Profile";
 
@@ -19,7 +19,6 @@ const App = () => {
             path={"/"}
             element={< Home />}
         />
-
         <Route
             path="/profile/*"
             element={
@@ -28,12 +27,10 @@ const App = () => {
                   element={ < Profile />}
               />}
         />
-
         <Route
           path="/login"
           element={<LoginForm onLogin={() => setIsAuthenticated(true)} />}
         />
-
         <Route path="/register" element={<RegistrationForm />}></Route>
           <Route
               path={"/logout"}

@@ -1,6 +1,6 @@
 //import LoginForm from "./loginComponent";
 import '../css/Connection.css'
-import RegistrationForm from "../Components/registerComponent";
+import RegistrationForm from "../Components/RegisterComponent";
 import { Link } from "react-router-dom";
 
 

@@ -1,7 +1,7 @@
 import '../css/App.css'
-import TopBar from '../Components/topBar'
+import TopBar from '../Components/TopBar'
 import '../css/Profile.css'
-import UserInfoComponent from '../Components/userInfoComponent'
+import UserInfoComponent from '../Components/UserInfoComponent'
 import { useEffect, useState } from 'react'
 import LoaderComponent from '../Components/LoaderComponent'
 

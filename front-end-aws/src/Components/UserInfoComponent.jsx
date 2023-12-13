@@ -1,16 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import Select from 'react-select'
-import { Link, useNavigate } from 'react-router-dom' // Importez useHistory depuis react-router-dom
-import { PatternFormat } from 'react-number-format' // Lib pour les formats de numéro de téléphone
-import '../css/Connection.css'
+import React, { useEffect, useState } from 'react'
+import { PatternFormat } from 'react-number-format'
+import { BsCheckCircleFill } from 'react-icons/bs'
+import Select from 'react-select' // Lib pour les formats de numéro de téléphone
 
-const RegistrationForm = () => {
-  const navigate = useNavigate() // Initialisez useHistory
+const UserInfoComponent = ({ userInfo }) => {
 
-  // select input from https://codesandbox.io/p/sandbox/country-dropdown-with-react-select-w0rk6
-  const [countries, setCountries] = useState([])
-  const [selectedCountry, setSelectedCountry] = useState({})
+  const [userData, setUserData] = useState({
+    email: localStorage.getItem('email'),
+    first_name: userInfo.first_name,
+    last_name: userInfo.last_name,
+    phone_number: userInfo.phone_number,
+    job: userInfo.job,
+    password: userInfo.password,
+  })
 
+  const [addressData, setAddressData] = useState({
+    address: userInfo.address,
+    postal_code: userInfo.postal_code,
+    city: userInfo.city,
+    country: userInfo.country,
+  })
+  const allData = {
+    ...userData,
+    ...addressData,
+  }
+
+  // Gestion du select pour les pays
+  const [countries, setCountries] = useState([''])
+  const [selectedCountry, setSelectedCountry] = useState({ '': '' })
   useEffect(() => {
     fetch(
       'https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code',
@@ -18,28 +35,19 @@ const RegistrationForm = () => {
       .then((response) => response.json())
       .then((data) => {
         setCountries(data.countries)
-        setSelectedCountry(data.userSelectValue)
+        const userSelectValue = data.countries.filter(
+          (country) => country.value === userInfo.country,
+        )
+        setSelectedCountry(userSelectValue[0])
       })
-  }, [])
+  }, [userInfo.country])
 
-  // State pour stocker les valeurs des champs du formulaire
-  const [userData, setUserData] = useState({
-    email: '',
-    first_name: '',
-    last_name: '',
-    phone_number: '',
-    job: '',
-    password: '',
-  })
 
-  const [addressData, setAddressData] = useState({
-    address: '',
-    postal_code: '',
-    city: '',
-    country: '',
-  })
-
-  // Fonction de gestion des changements de champ
+  const handleCountryChange = (e) => {
+    const value = e.value
+    setSelectedCountry(e)
+    setAddressData({ ...addressData, 'country': value })
+  }
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target
     setUserData({ ...userData, [name]: value })
@@ -49,28 +57,18 @@ const RegistrationForm = () => {
     const { name, value } = e.target
     setAddressData({ ...addressData, [name]: value })
   }
-  const handleCountryChange = (e) => {
-    const value = e.value
-    setSelectedCountry(e)
-    setAddressData({ ...addressData, ['country']: value })
-  }
-  const allData = {
-    ...userData,
-    ...addressData,
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     try {
       // Effectuez votre requête ici, par exemple avec fetch
       await fetch(
-        'https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/register',
+        'https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/update',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Accept: '*/*',
+            Connection: 'keep-alive',
           },
           body: JSON.stringify(allData),
         },
@@ -85,25 +83,33 @@ const RegistrationForm = () => {
           return response.json() // Renvoie une nouvelle promesse
         })
         .then((data) => {
-          navigate('/login')
+          window.alert('Profil mis à jour')
+          console.log(data)
         })
     } catch (error) {
       console.error('Erreur lors de la requête', error)
     }
   }
 
+  useEffect(() => {
+    const currentJob = (document.getElementsByName(`${userInfo.job}`).item(0) )
+    currentJob.setAttribute("selected", "selected")
+  }, [])
+
   return (
-    <div className='container'>
-      <div className='card'>
+    <div>
+      <div className={'center col'}>
+        <p> Profil crée le {userInfo.createdAt.split('|')[0]} à {userInfo.createdAt.split('|')[1]}</p>
+        <p> Profil mis à jour le {userInfo.updatedAt.split('|')[0]} à {userInfo.updatedAt.split('|')[1]} </p>
         <form onSubmit={handleSubmit}>
           <div className='input-line'>
-            <h5>Personnal Informations</h5>
+            <h5>Informations Personnelles</h5>
             <input
               className='user'
               type='text'
               name='last_name'
               required
-              placeholder='Enter your last name'
+              placeholder={'Nom de famille'}
               value={userData.last_name}
               onChange={handleUserInfoChange}
             />
@@ -112,19 +118,18 @@ const RegistrationForm = () => {
               type='text'
               name='first_name'
               required
-              placeholder='Enter your first name'
+              placeholder={'Prénom'}
               value={userData.first_name}
               onChange={handleUserInfoChange}
             />
           </div>
-
           <div className='input-line'>
-            <h5>Address Informations</h5>
+            <h5>Information localisation</h5>
             <input
               type='text'
               name='postal_code'
               required
-              placeholder='Enter your postal code XXX XXX'
+              placeholder={'Code Postal'}
               maxLength={7}
               value={addressData.postal_code}
               onChange={handleAddressInfoChange}
@@ -146,7 +151,7 @@ const RegistrationForm = () => {
               type='text'
               name='city'
               required
-              placeholder='Enter your city'
+              placeholder={userInfo.city}
               value={addressData.city}
               onChange={handleAddressInfoChange}
             />
@@ -159,9 +164,8 @@ const RegistrationForm = () => {
             />
           </div>
           <div className='input-line'>
-            <h5>Contact Informations</h5>
+            <h5>Informations de contact</h5>
             {/*// https://s-yadav.github.io/react-number-format/docs/intro*/}
-
             <PatternFormat
               format='+1 (###)-####-###'
               placeholder={'Format : (###)-####-###'}
@@ -175,36 +179,31 @@ const RegistrationForm = () => {
               name='email'
               id={'email'}
               required
-              placeholder='Enter your email'
+              disabled={true}
+              placeholder={userInfo.email}
               value={userData.email}
               onChange={handleUserInfoChange}
             />
           </div>
-          <input
-            type='text'
-            name='job'
-            required
-            placeholder='Enter your job/activity'
-            value={userData.job}
-            onChange={handleUserInfoChange}
-            className={'job'}
-          />
+
+
           <input
             type='password'
             name='password'
-            required
-            placeholder='Enter your password'
-            value={userData.password}
+            placeholder='*****'
             onChange={handleUserInfoChange}
             className={'password'}
           />
-          <button type='submit'>Submit</button>
+          <button
+            className={'save-button'}>
+            Sauvegarder
+            <BsCheckCircleFill />
+          </button>
         </form>
 
-        <Link to={'/login'}> Deja un compte ?</Link>
       </div>
     </div>
   )
 }
 
-export default RegistrationForm
+export default UserInfoComponent

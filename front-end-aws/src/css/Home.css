@@ -1,9 +1,9 @@
-.main-container{
+.main-container-css{
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 50px;
-
+    flex-direction: column;
 }
 
 .wrap-container{
@@ -44,4 +44,11 @@
 .contact-link{
     display: flex;
     justify-content: center;
+}
+.filter-button{
+    background-color: darkslategray;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }

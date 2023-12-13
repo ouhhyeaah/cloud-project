@@ -1,6 +1,6 @@
 import '../css/App.css'
-import TopBar from '../Components/topBar'
-import PostsHomePage from '../Components/postsHomePage'
+import TopBar from '../Components/TopBar'
+import PostsHomePage from '../Components/PostsHomePage'
 import React, { useEffect, useState } from 'react'
 import LoaderComponent from '../Components/LoaderComponent'
 

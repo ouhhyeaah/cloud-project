@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/Modal.css'
 import { RiCloseLine } from 'react-icons/ri'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const Modal = ({ setIsOpen }) => {
 
@@ -60,7 +60,6 @@ const Modal = ({ setIsOpen }) => {
             <RiCloseLine style={{ marginBottom: '-3px' }} />
           </button>
           <div className={'modalContent'}>
-
             <form onSubmit={handleSubmit}>
               <input
                 type={'text'}
@@ -81,11 +80,11 @@ const Modal = ({ setIsOpen }) => {
             </form>
 
           </div>
-          <div className={'modalActions'}>
-            <div className={'actionsContainer'}>
+          <div className='modalActions'>
+            <div className='actionsContainer'>
 
               <button
-                className={'cancelBtn'}
+                className='cancelBtn'
                 onClick={() => setIsOpen(false)}>
                 Annuler
               </button>

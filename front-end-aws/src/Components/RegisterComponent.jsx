@@ -1,33 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { PatternFormat } from 'react-number-format'
-import { BsCheckCircleFill } from 'react-icons/bs'
-import Select from 'react-select' // Lib pour les formats de numéro de téléphone
+import React, { useState, useEffect } from 'react'
+import Select from 'react-select'
+import { Link, useNavigate } from 'react-router-dom' // Importez useHistory depuis react-router-dom
+import { PatternFormat } from 'react-number-format' // Lib pour les formats de numéro de téléphone
+import '../css/Connection.css'
 
-const UserInfoComponent = ({ userInfo }) => {
+const RegistrationForm = () => {
+  const navigate = useNavigate() // Initialisez useHistory
 
-  const [userData, setUserData] = useState({
-    email: localStorage.getItem('email'),
-    first_name: userInfo.first_name,
-    last_name: userInfo.last_name,
-    phone_number: userInfo.phone_number,
-    job: userInfo.job,
-    password: userInfo.password,
-  })
+  // select input from https://codesandbox.io/p/sandbox/country-dropdown-with-react-select-w0rk6
+  const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState({})
 
-  const [addressData, setAddressData] = useState({
-    address: userInfo.address,
-    postal_code: userInfo.postal_code,
-    city: userInfo.city,
-    country: userInfo.country,
-  })
-  const allData = {
-    ...userData,
-    ...addressData,
-  }
-
-  // Gestion du select pour les pays
-  const [countries, setCountries] = useState([''])
-  const [selectedCountry, setSelectedCountry] = useState({ '': '' })
   useEffect(() => {
     fetch(
       'https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code',
@@ -35,19 +18,28 @@ const UserInfoComponent = ({ userInfo }) => {
       .then((response) => response.json())
       .then((data) => {
         setCountries(data.countries)
-        const userSelectValue = data.countries.filter(
-          (country) => country.value === userInfo.country,
-        )
-        setSelectedCountry(userSelectValue[0])
+        setSelectedCountry(data.userSelectValue)
       })
-  }, [userInfo.country])
+  }, [])
 
+  // State pour stocker les valeurs des champs du formulaire
+  const [userData, setUserData] = useState({
+    email: '',
+    first_name: '',
+    last_name: '',
+    phone_number: '',
+    job: '',
+    password: '',
+  })
 
-  const handleCountryChange = (e) => {
-    const value = e.value
-    setSelectedCountry(e)
-    setAddressData({ ...addressData, 'country': value })
-  }
+  const [addressData, setAddressData] = useState({
+    address: '',
+    postal_code: '',
+    city: '',
+    country: '',
+  })
+
+  // Fonction de gestion des changements de champ
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target
     setUserData({ ...userData, [name]: value })
@@ -57,18 +49,28 @@ const UserInfoComponent = ({ userInfo }) => {
     const { name, value } = e.target
     setAddressData({ ...addressData, [name]: value })
   }
+  const handleCountryChange = (e) => {
+    const value = e.value
+    setSelectedCountry(e)
+    setAddressData({ ...addressData, ['country']: value })
+  }
+  const allData = {
+    ...userData,
+    ...addressData,
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     try {
       // Effectuez votre requête ici, par exemple avec fetch
       await fetch(
-        'https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/update',
+        'https://unl87haa1i.execute-api.us-east-1.amazonaws.com/dev/register',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Accept: '*/*',
-            Connection: 'keep-alive',
           },
           body: JSON.stringify(allData),
         },
@@ -83,27 +85,25 @@ const UserInfoComponent = ({ userInfo }) => {
           return response.json() // Renvoie une nouvelle promesse
         })
         .then((data) => {
-          window.alert('Profil mis à jour')
-          console.log(data)
+          navigate('/login')
         })
     } catch (error) {
       console.error('Erreur lors de la requête', error)
     }
   }
+
   return (
-    <div>
-      <div className={'center col'}>
-        <p> Profil crée le {userInfo.createdAt.split('|')[0]} à {userInfo.createdAt.split('|')[1]}</p>
-        <p> Profil mis à jour le {userInfo.updatedAt.split('|')[0]} à {userInfo.updatedAt.split('|')[1]} </p>
+    <div className='container'>
+      <div className='card'>
         <form onSubmit={handleSubmit}>
           <div className='input-line'>
-            <h5>Informations Personnelles</h5>
+            <h5>Personnal Informations</h5>
             <input
               className='user'
               type='text'
               name='last_name'
               required
-              placeholder={'Nom de famille'}
+              placeholder='Enter your last name'
               value={userData.last_name}
               onChange={handleUserInfoChange}
             />
@@ -112,18 +112,19 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='first_name'
               required
-              placeholder={'Prénom'}
+              placeholder='Enter your first name'
               value={userData.first_name}
               onChange={handleUserInfoChange}
             />
           </div>
+
           <div className='input-line'>
-            <h5>Information localisation</h5>
+            <h5>Address Informations</h5>
             <input
               type='text'
               name='postal_code'
               required
-              placeholder={'Code Postal'}
+              placeholder='Enter your postal code XXX XXX'
               maxLength={7}
               value={addressData.postal_code}
               onChange={handleAddressInfoChange}
@@ -145,7 +146,7 @@ const UserInfoComponent = ({ userInfo }) => {
               type='text'
               name='city'
               required
-              placeholder={userInfo.city}
+              placeholder='Enter your city'
               value={addressData.city}
               onChange={handleAddressInfoChange}
             />
@@ -158,8 +159,9 @@ const UserInfoComponent = ({ userInfo }) => {
             />
           </div>
           <div className='input-line'>
-            <h5>Informations de contact</h5>
+            <h5>Contact Informations</h5>
             {/*// https://s-yadav.github.io/react-number-format/docs/intro*/}
+
             <PatternFormat
               format='+1 (###)-####-###'
               placeholder={'Format : (###)-####-###'}
@@ -173,38 +175,42 @@ const UserInfoComponent = ({ userInfo }) => {
               name='email'
               id={'email'}
               required
-              disabled={true}
-              placeholder={userInfo.email}
+              placeholder='Enter your email'
               value={userData.email}
               onChange={handleUserInfoChange}
             />
           </div>
-          <input
-            type='text'
-            name='job'
-            required
-            placeholder={userInfo.job}
-            value={userData.job}
-            onChange={handleUserInfoChange}
-            className={'job'}
-          />
+          <select onChange={handleUserInfoChange} name={"job"} placeholder="Enter your job">
+            <option name="Photographe" value="Photographe">Photographe</option>
+            <option name="Architecte" value="Architecte">Architecte</option>
+            <option name="Cuisinier" value="Cuisinier">Cuisinier</option>
+            <option name="Styliste" value="Styliste">Styliste</option>
+            <option name="Fleuriste" value="Fleuriste">Fleuriste</option>
+            <option name="Ostéopathe" value="Ostéopathe">Ostéopathe</option>
+            <option name="Webmaster" value="Webmaster">Webmaster</option>
+            <option name="Graphiste" value="Graphiste">Graphiste</option>
+            <option name="Webmaster" value="Webmaster">Webmaster</option>
+            <option name="Coiffeur" value="Coiffeur">Coiffeur</option>
+            <option name="Sommelier" value="Sommelier">Sommelier</option>
+            <option name="Notaire" value="Notaire">Notaire</option>
+            <option name="Garagiste" value="Garagiste">Garagiste</option>
+          </select>
           <input
             type='password'
             name='password'
-            placeholder='*****'
+            required
+            placeholder='Enter your password'
+            value={userData.password}
             onChange={handleUserInfoChange}
             className={'password'}
           />
-          <button
-            className={'save-button'}>
-            Sauvegarder
-            <BsCheckCircleFill />
-          </button>
+          <button type='submit'>Submit</button>
         </form>
 
+        <Link to={'/login'}> Deja un compte ?</Link>
       </div>
     </div>
   )
 }
 
-export default UserInfoComponent
+export default RegistrationForm
